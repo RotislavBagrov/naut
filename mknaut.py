@@ -1,5 +1,5 @@
 #!/usr/bin/python2.7
-# Developed by Rostislav Bagrov (r.bagrov@foodpanda.com)
+# Developed by Rostislav Bagrov (bagrov.rostislav@gmail.com)
 # >>> ver 0.0.1
 # - SSH to mikrotik. Action: Taking arguments from cli: --user, --password, --hostname, --port
 # - Create: --ident option. Action: prints router identity - default action
@@ -20,7 +20,8 @@
 # - Create: --silent. Action: No output at all
 # - Add to: Github
 # - Parse stdout.rif file to target device
-# - 
+# -
+# -
 
 # ----------------------------------------
 # Import modules
