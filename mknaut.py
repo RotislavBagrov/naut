@@ -21,7 +21,7 @@
 # - Add to: Github
 # - Parse rsc file to target device
 # - Upload file to target device
-# -
+#
 
 # ----------------------------------------
 # Import modules
@@ -70,7 +70,7 @@ def _c_put(conf,put):
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             ssh.connect(hostname=device.find('address').text,port=int(device.find('port').text),username=device.find('user').text,password=device.find('password').text,allow_agent=False,look_for_keys=False)
             ftp = ssh.open_sftp()
-            ftp.put(put,str([putfile][-1]))
+            ftp.put(put,str(putfile[-1]))
             ftp.close
             ssh.close
         except Exception as error:
