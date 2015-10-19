@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------
 # >>> ver 0.0.2
 # - Create: Certificate connection: ID-DSA
-# - Create: --conf. Action: Access from list in format: user:pass:hostname:port
+# - Create: --conf. Action: Access from list in xml schema.
 # - Create: --listusers. Action: Print list of current users
 # - Create: --run. Action: Runs whatever in quotes. '/system identity get name'
 # - Create: --health. Action: Returns health information.
