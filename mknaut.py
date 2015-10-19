@@ -19,8 +19,8 @@
 # >>> ver 0.0.3
 # - Create: --silent. Action: No output at all
 # - Add to: Github
-# - Parse stdout.rif file to target device
-# -
+# - Parse rsc file to target device
+# - Upload file to target device
 # -
 
 # ----------------------------------------
@@ -43,6 +43,8 @@ parser.add_argument('--listusers', dest='listusers',action='store_true', help='L
 parser.add_argument('--health', dest='health',action='store_true', help='Lists health status.')
 parser.add_argument('--run', dest='run', default='None', help='Runs whatever you throu at the target router. Use quotes!')
 parser.add_argument('--silent', dest='silent', default='None', help='Does not produce any outout to stdout')
+parser.add_argument('--rsc', dest='rsc', default='None', help='Full path to RSC file. Ex: /home/user/address_list.rsc')
+parser.add_argument('--put', dest='put', default='None', help='Full path to file. Ex: /home/user/somefile')
 argresults = parser.parse_args()
 
 # ----------------------------------------
@@ -54,8 +56,45 @@ dsakeylocation = os.getenv("HOME") + '/.ssh/id_dsa'
 userprint = ':put [ /user print ]'
 healthcheck = ':put [ /system health print ]'
 
+
 # ----------------------------------------
 # define functions
+
+def _c_put(conf,put):
+    if "/" in put:
+        putfile = put.split('/')
+    xml_conf = _conf_parse(conf)
+    for device in xml_conf.findall('device'):
+        try:
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname=device.find('address').text,port=int(device.find('port').text),username=device.find('user').text,password=device.find('password').text,allow_agent=False,look_for_keys=False)
+            ftp = ssh.open_sftp()
+            ftp.put(put,str([putfile][-1]))
+            ftp.close
+            ssh.close
+        except Exception as error:
+            if argresults.silent == 'None':
+                print('Cannot upload ' + rsc + ' file on: ' + device.get('name')  + ' -> ' + device.find('address').text + ' because: ' + str(error))
+
+def _c_rsc(conf,rsc):
+    if "/" in rsc:
+        rscfile = rsc.split('/')
+    xml_conf = _conf_parse(conf)
+    importrsc = 'import ' + str(rscfile[-1])
+    for device in xml_conf.findall('device'):
+        try:
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname=device.find('address').text,port=int(device.find('port').text),username=device.find('user').text,password=device.find('password').text,allow_agent=False,look_for_keys=False)
+            ftp = ssh.open_sftp()
+            ftp.put(rsc,str(rscfile[-1]))
+            stdin,stdout,stderr=ssh.exec_command(importrsc)
+            ftp.close
+            ssh.close
+        except Exception as error:
+            if argresults.silent == 'None':
+                print('Cannot upload ' + rsc + ' file on: ' + device.get('name')  + ' -> ' + device.find('address').text + ' because: ' + str(error))
 
 def _conf_parse(conf):
     try:
@@ -646,6 +685,10 @@ def main():
         _c_useradd(argresults.conf,argresults.adduser)
     elif argresults.conf != 'None' and argresults.deluser != 'None':
         _c_userdel(argresults.conf,argresults.deluser)
+    elif argresults.conf != 'None' and argresults.rsc != 'None':
+        _c_rsc(argresults.conf,argresults.rsc)
+    elif argresults.conf != 'None' and argresults.put != 'None':
+        _c_put(argresults.conf,argresults.put)
     elif argresults.ident == 'yes':
         _dest_check(argresults.user,argresults.conf,argresults.password,argresults.ip)
         _ident(argresults.user,argresults.ip,argresults.password,argresults.port,argresults.key)
