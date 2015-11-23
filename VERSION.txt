@@ -25,6 +25,7 @@
 # - Project rename: YAMT - Yet Another Mikrotik Tool
 # ----------------------------------------------------------------------------
 # >>> ver 0.4.0.0 - in development
+# - Create: --asn2adl. Action: Downloads ASN list and create address list from the addresses.
 # - Create: --snapshot. Action: Collects device information and export to html. Takes arguments: html destination directory and filename.
 #          Ex. ./yamt.py --conf cis_region_routers.xml --status /var/www/look_at_me.html
 # ----------------------------------------------------------------------------
