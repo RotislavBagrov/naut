@@ -1,5 +1,5 @@
 # >>> ver 0.1.0.0 - released
-# - SSH to mikrotik. Action: Taking arguments from cli: --user, --password, --hostname, --port
+# - SSH to mikrotik.  Action: Taking arguments from cli: --user, --password, --hostname, --port
 # - Create: --ident option. Action: prints router identity - default action
 # - Add to: --ident full. Action: prints system architecture
 # - Create: --adduser. Action: -adduser user:pass
