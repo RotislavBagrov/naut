@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python
 # Developed by Rostislav Bagrov (bagrov.rostislav@gmail.com)
 
 # ----------------------------------------
@@ -95,14 +95,14 @@ def _c_rsc(conf,rsc):
 
 def _conf_parse(conf):
     try:
-        loging.info('Trying to parse ' + conf + ' conf file.')
+        logging.info('Trying to parse ' + conf + ' conf file.')
         xml_conf = xmlparser.parse(conf)
-        loging.info('Succesfully parsed: ' + conf + ' conf file.')
+        logging.info('Succesfully parsed: ' + conf + ' conf file.')
         return xml_conf
     except IOError as e:
         if argresults.silent == 'None':
             print "I/O error for file: " + cfile + " - {0}".format(e.strerror)
-        loging.info('Cannot parse ' + conf + ' conf file.' + str(e))
+        logging.info('Cannot parse ' + conf + ' conf file.' + str(e))
 
 
 def _userdel(user,hostname,password,port,userforremove,authkey):
